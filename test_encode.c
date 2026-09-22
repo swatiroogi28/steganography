@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include "encode.h"
+#include "decode.h"
 #include "types.h"
 
 int main(int argc,char *argv[])
 {
     EncodeInfo encInfo;
+    DecodeInfo decInfo;
     /*
     if(check_operation_type(argv[1][1])==e_encode)
     -> call read_and_validate_encode_args(argv,&encInfo)==e_sucess
@@ -14,16 +16,27 @@ int main(int argc,char *argv[])
     */
     if(check_operation_type(argv[1][1])==e_encode)
     {
-        if(read_and_validate_encode_args(argv,&encoInfo)==e_success)
+        if(read_and_validate_encode_args(argc,argv,&encInfo)==e_success)
         {
-            if(do_encoding(encoInfo)==e_success)
+            if(do_encoding(&encInfo)==e_success)
             {
                 printf("Encoding is success\n");
             }
         }
     }
+    else if(check_operation_type(argv[1][1])==e_decode)
+    {
+        if(read_and_validate_decode_args(argc,argv,&decInfo)==e_success)
+        {
+            if(do_decoding(&decInfo)==e_success)
+            {
+                printf("Decoding is success\n");
+            }
+        }
+    }
     return 0;
 }
+
 OperationType check_operation_type(char opt)
 {
     if(opt=='e')
