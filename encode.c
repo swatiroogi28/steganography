@@ -264,7 +264,9 @@ uint get_file_size(FILE *fptr)
     -> return ftell() 
     */
     fseek(fptr,0,SEEK_END);
-    return ftell(fptr);
+    uint size = ftell(fptr);
+    fseek(fptr,0,SEEK_SET);
+    return size;
 }
 Status copy_bmp_header(FILE *fptr_src_image, FILE *fptr_dest_image)
 {

@@ -8,7 +8,7 @@
 Status open_files_decoding(DecodeInfo *decInfo)
 {
     // Src Image file
-    decInfo->fptr_src_image = fopen(decInfo->src_image_fname, "r");
+    decInfo->fptr_src_image = fopen(decInfo->src_image_fname, "rb");
     // Do Error handling
     if (decInfo->fptr_src_image == NULL)
     {
@@ -17,18 +17,6 @@ Status open_files_decoding(DecodeInfo *decInfo)
 
     	return e_failure;
     }
-
-    // Secret file
-    decInfo->fptr_secret = fopen(decInfo->secret_fname, "w");
-    // Do Error handling
-    if (decInfo->fptr_secret == NULL)
-    {
-    	perror("fopen");
-    	fprintf(stderr, "ERROR: Unable to open file %s\n", decInfo->secret_fname);
-
-    	return e_failure;
-    }
-
     // No failure return e_success
     return e_success;
 }
@@ -49,7 +37,7 @@ Status read_and_validate_decode_args(int argc,char *argv[], DecodeInfo *decInfo)
         return e_failure;
     }
     decInfo->src_image_fname=argv[2];
-    if(argv[3]==NULL)
+    if(argc==3)
     {
         decInfo->secret_fname="decode";
     }
@@ -87,6 +75,12 @@ Status do_decoding(DecodeInfo *decInfo)
         printf("Error: Failed to decode secret file size\n");
         return e_failure;
     }
+    if(decode_secret_file_data(decInfo)==e_failure)
+    {
+        printf("Error: Failed to decode secret data\n");
+        return e_failure;
+    }
+    return e_success;
 
 }
 Status decode_magic_string(const char *magic_string, DecodeInfo *decInfo)
@@ -159,5 +153,27 @@ Status decode_secret_file_size( DecodeInfo *decInfo)
     char buff[32];
     fread(buff,32,1,decInfo->fptr_src_image);
     decode_size_from_lsb(&decInfo->size_secret_file,buff);
+    return e_success;
+}
+Status decode_secret_file_data(DecodeInfo *decInfo)
+{
+    char filename[50];
+    strcpy(filename,decInfo->secret_fname);
+    strcat(filename,decInfo->extn_secret_file);
+    decInfo->fptr_secret = fopen(filename, "w");
+    if(decInfo->fptr_secret == NULL)
+    {
+        perror("fopen");
+        return e_failure;
+    }
+    char buff[8];
+    char data;
+    for(int i=0;i<decInfo->size_secret_file;i++)
+    {
+        fread(buff,8,1,decInfo->fptr_src_image);
+        data=0;
+        decode_byte_from_lsb(&data,buff);
+        fwrite(&data,1,1,decInfo->fptr_secret);
+    }
     return e_success;
 }
