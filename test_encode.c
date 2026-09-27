@@ -29,6 +29,15 @@ int main(int argc,char *argv[])
             {
                 printf("Encoding is success\n");
             }
+            else
+            {
+                printf("Encoding is unsuccess\n");
+            }
+        }
+        else
+        {
+            printf("Encoding arguments are Invalid\n");
+
         }
     }
     else if(check_operation_type(argv[1][1])==e_decode)
@@ -39,6 +48,15 @@ int main(int argc,char *argv[])
             {
                 printf("Decoding is success\n");
             }
+            else
+            {
+                printf("Decoding is unsuccess\n");
+            }
+        }
+        else
+        {
+            printf("Decoding arguments are Invalid\n");
+
         }
     }
     else
