@@ -119,14 +119,13 @@ Status read_and_validate_encode_args(int argc,char *argv[], EncodeInfo *encInfo)
         len=strlen(argv[4]);
         if(len<4 ||argv[4][len-4]!='.'|| argv[4][len-3]!='b'|| argv[4][len-2]!='m'|| argv[4][len-1]!='p')
         {
-            printf("Error: output file should be .bmp\n");
+            printf("Error: output filename should be .bmp extension\n");
             return e_failure;
         }
         encInfo->stego_image_fname=argv[4];
     }
     if(open_files_encoding(encInfo)==e_failure)
     {
-        printf("Error: unable to open file\n");
         return e_failure;
     }
     return e_success;

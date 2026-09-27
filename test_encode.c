@@ -14,6 +14,13 @@ int main(int argc,char *argv[])
             print "Encoding is success"
 
     */
+    if(argc<2)
+    {
+        printf("Invalid Input\n");
+        printf("For encoding: ./a.out -e beautiful.bmp secret.txt [stego.bmp]\n");
+        printf("For dencoding: ./a.out -d stego.bmp [decode.txt]\n");
+        return 1;
+    }
     if(check_operation_type(argv[1][1])==e_encode)
     {
         if(read_and_validate_encode_args(argc,argv,&encInfo)==e_success)
@@ -33,6 +40,13 @@ int main(int argc,char *argv[])
                 printf("Decoding is success\n");
             }
         }
+    }
+    else
+    {
+        printf("Invalid operation\n");
+        printf("For encoding: ./a.out -e beautiful.bmp secret.txt [stego.bmp]\n");
+        printf("For dencoding: ./a.out -d stego.bmp [decode.txt]\n");
+        return 1;
     }
     return 0;
 }

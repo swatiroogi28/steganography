@@ -23,9 +23,9 @@ typedef struct _DecodeInfo
     /* Secret file */
     char *secret_fname;
     FILE *fptr_secret;
-    long extn_size;
-    char extn_secret_file[MAX_FILE_SUFFIX];
-    long size_secret_file;
+    int extn_size;
+    char extn_secret_file[MAX_FILE_SUFFIX+1];
+    int size_secret_file;
 
 } DecodeInfo;
 
@@ -51,7 +51,7 @@ Status decode_magic_string(const char *magic_string, DecodeInfo *decInfo);
 Status decode_secret_file_extn_size( DecodeInfo *decInfo);
 
 /* Encode secret file extenstion */
-Status decode_secret_file_extn(long file_extn, DecodeInfo *decInfo);
+Status decode_secret_file_extn(DecodeInfo *decInfo);
 
 /* Encode secret file size */
 Status decode_secret_file_size( DecodeInfo *decInfo);
@@ -60,7 +60,7 @@ Status decode_secret_file_size( DecodeInfo *decInfo);
 Status decode_secret_file_data(DecodeInfo *decInfo);
 
 /* Encode function, which does the real encoding */
-Status decode_size_from_lsb(long *size,char *Image_buff);
+Status decode_size_from_lsb(int *size,char *Image_buff);
 
 /* Encode a byte into LSB of image data array */
 
